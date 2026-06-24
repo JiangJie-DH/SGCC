@@ -1,7 +1,7 @@
 set.seed(123)
 
 p_no_center <- ggraph(g_no_center, layout = "fr") +
-
+  
   # —— 边 ——
   geom_edge_link(
     aes(width = weight),
@@ -10,7 +10,7 @@ p_no_center <- ggraph(g_no_center, layout = "fr") +
     show.legend = FALSE
   ) +
   scale_edge_width(range = c(0.4, 2.5)) +
-
+  
   # —— 节点 ——
   geom_node_point(
     aes(
@@ -19,7 +19,7 @@ p_no_center <- ggraph(g_no_center, layout = "fr") +
     ),
     alpha = 0.9
   ) +
-
+  
   # —— 标签 ——
   geom_node_text(
     aes(label = id_Pinyin),
@@ -27,33 +27,33 @@ p_no_center <- ggraph(g_no_center, layout = "fr") +
     size = 2.6,
     max.overlaps = 15
   ) +
-
+  
   # —— 节点大小（隐藏图例） ——
   scale_size_continuous(
     range = c(2.5, 12),
     guide = "none"
   ) +
-
+  
   # —— Betweenness颜色 ——
   scale_color_gradient(
     low  = "lightblue",
     high = "darkred",
-    name = "Betweenness\n(Bridge Role)"
+    name = "Betweenness"
   ) +
-
+  
   # —— 主题 ——
   theme_graph(base_family = "serif") +
-
+  
   labs(
-    title = "Organizational Co-occurrence Network after Removing Shanghai General Chamber of Commerce",
-
+    title = "Organizational Co-occurrence Network after De-centering",
+    
     subtitle =
-      "Node color represents betweenness centrality; darker nodes indicate stronger brokerage roles",
-
+      "Edge weight > 8",
+    
     caption =
       "Removing the dominant hub reveals alternative bridging organizations and latent structural dependencies within the organizational network"
   ) +
-
+  
   guides(
     size = "none"
   )
