@@ -1,46 +1,70 @@
+set.seed(123)
+
 p_no_center <- ggraph(g_no_center, layout = "fr") +
+
+  # —— 边 ——
   geom_edge_link(
     aes(width = weight),
-    color = "gray60",
+    color = "gray65",
     alpha = 0.3,
     show.legend = FALSE
   ) +
+  scale_edge_width(range = c(0.4, 2.5)) +
+
+  # —— 节点 ——
   geom_node_point(
     aes(
-      size  = degree_network,   # 仍用于视觉
+      size  = degree_network,
       color = betweenness
     ),
-    alpha = 0.8
+    alpha = 0.9
   ) +
+
+  # —— 标签 ——
   geom_node_text(
-    aes(label = id_Pinyin),     # ← 改这里：统一使用 id_Pinyin
+    aes(label = id_Pinyin),
     repel = TRUE,
-    size = 3,
-    max.overlaps = 20
+    size = 2.6,
+    max.overlaps = 15
   ) +
-  scale_edge_width(range = c(0.5, 3)) +
-  
-  # ⚠️ 关键：size 图例关闭
+
+  # —— 节点大小（隐藏图例） ——
   scale_size_continuous(
-    range = c(2, 12),
+    range = c(2.5, 12),
     guide = "none"
   ) +
-  
+
+  # —— Betweenness颜色 ——
   scale_color_gradient(
-    low = "lightblue",
-    high = "darkred"
+    low  = "lightblue",
+    high = "darkred",
+    name = "Betweenness\n(Bridge Role)"
   ) +
-  
-  theme_graph() +
+
+  # —— 主题 ——
+  theme_graph(base_family = "serif") +
+
   labs(
-    title = '去除“上海总商会”后的组织网络',
-    subtitle = 'Edge weight > 8',
-    color = 'Betweenness'
+    title = "Organizational Co-occurrence Network after Removing Shanghai General Chamber of Commerce",
+
+    subtitle =
+      "Node color represents betweenness centrality; darker nodes indicate stronger brokerage roles",
+
+    caption =
+      "Removing the dominant hub reveals alternative bridging organizations and latent structural dependencies within the organizational network"
   ) +
-  
+
   guides(
-    size = "none"   # 再加一道保险，确保 degree_network 不进图例
+    size = "none"
   )
 
 print(p_no_center)
 
+ggsave(
+  filename = "~/Desktop/p_no_center.png",
+  plot = p_no_center,
+  dpi = 500,
+  width = 10,
+  height = 8,
+  units = "in"
+)
